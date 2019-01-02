@@ -1,9 +1,16 @@
-# -*- coding: utf-8 -*-
-# from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import *
 
 # Create your views here.
 def index(request):
-    return HttpResponse('<h1>Django</h1>')
+    albums=Album.objects.all()
+    return render(request,'./music/index.html',{'albums':albums})
+
+def details(request,album_id):
+    try:
+        album=Album.objects.get(pk=album_id)
+    except DoesNotExist:
+        raise Http404('No')
+    return render(request,'./music/details.html',{'album':album})
